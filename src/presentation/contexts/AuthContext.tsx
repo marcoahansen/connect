@@ -66,6 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setSigningIn(true);
     try {
       const session = await authService.login(credentials);
+      console.log(session)
       setAuthToken(session.token);
       AsyncStorage.setItem(TOKEN_KEY, session.token).catch(() => undefined)
       AsyncStorage.setItem(USER_KEY, JSON.stringify(session.profile))

@@ -11,3 +11,8 @@ export interface UserProfile {
   lastName: string;
   avatar?: string;
 }
+
+export interface Session {
+  token: string;
+  profile: UserProfile
+}

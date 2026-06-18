@@ -5,20 +5,28 @@ import * as S from './styles'
 import { Input } from '../../components/Input';
 import { useState } from 'react';
 import { validateRequired } from '../../utils/validation';
+import { useAuth } from '../../contexts/AuthContext';
 export const LoginScreen = () => {
   const theme = useTheme();
-  const [userName, setUserName] = useState('');
+  const { signIn, signingIn } = useAuth();
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{ userName?: string, password?: string }>({})
+  const [banner, setBanner] = useState<string | null>(null)
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const nextErrors = {
-      userName: validateRequired(userName, 'usuário') ?? undefined,
+      userName: validateRequired(username, 'usuário') ?? undefined,
       password: validateRequired(password, 'senha') ?? undefined,
     }
     setErrors(nextErrors);
     if (nextErrors.userName || nextErrors.password) return;
-    console.log(userName, password)
+    setBanner(null)
+    try {
+      await signIn({ username, password })
+    } catch (e) {
+      setBanner(e instanceof Error ? e.message : "Não foi possível entrar")
+    }
   }
   return (
     <S.Root>
@@ -42,11 +50,17 @@ export const LoginScreen = () => {
         <S.Body>
           <S.Title>Bem vindo!</S.Title>
           <S.SubTitle>Faça o login para gerenciar o seu time.</S.SubTitle>
+          {banner ? (
+            <S.BannerBox>
+              <Feather name="alert-circle" size={16} color={theme.colors.danger} />
+              <S.BadgeText>{banner}</S.BadgeText>
+            </S.BannerBox>
+          ) : null}
           <Input
             label="USUÁRIO"
             icon="user"
-            value={userName}
-            onChangeText={setUserName}
+            value={username}
+            onChangeText={setUsername}
             placeholder="emilys"
             autoCapitalize="none"
             autoCorrect={false}
@@ -66,7 +80,7 @@ export const LoginScreen = () => {
             onSubmitEditing={onSubmit}
           />
           <View style={{ marginTop: 8 }}>
-            <Button title='Entrar' color={theme.colors.accentDeep} onPress={onSubmit} />
+            <Button title='Entrar' color={theme.colors.accentDeep} onPress={onSubmit} disabled={signingIn} />
           </View>
         </S.Body>
       </ScrollView>
