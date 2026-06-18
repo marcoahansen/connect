@@ -1,6 +1,7 @@
 export type ThemeMode = 'light' | 'dark';
 
 const radii = {
+  xs: 7,
   sm: 14,
   md: 20,
   lg: 26,
