@@ -16,3 +16,16 @@ export const Greeting = styled.Text(({ theme }) => ({
   color: theme.colors.clay,
   marginBottom: 2,
 }));
+
+export const Centered = styled.View(({theme})=>({
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: theme.space.xl
+}))
+
+export const SmallText = styled.Text(({theme})=>({
+  fontSize: 13,
+  color: theme.colors.textMuted
+}))
+

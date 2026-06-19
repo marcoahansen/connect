@@ -81,6 +81,10 @@ export const LoginScreen = () => {
           />
           <View style={{ marginTop: 8 }}>
             <Button title='Entrar' color={theme.colors.accentDeep} onPress={onSubmit} disabled={signingIn} />
+            <S.Hint>
+              <S.HintText>Credenciais de teste</S.HintText>
+              <S.HintCreds>emilys · emilyspass</S.HintCreds>
+            </S.Hint>
           </View>
         </S.Body>
       </ScrollView>
